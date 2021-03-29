@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
 
-function App() {
+import { Layout } from './components';
+import { TODO_ROUTE, WELCOME_ROUTE } from './routes';
+import { Todo } from './Todo';
+import { Welcome } from './Welcome';
+
+export const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Layout>
+        <Switch>
+          <Route exact path={WELCOME_ROUTE} component={Welcome} />
+          <Route exact path={TODO_ROUTE} component={Todo} />
+        </Switch>
+      </Layout>
+    </Router>
   );
-}
-
-export default App;
+};
