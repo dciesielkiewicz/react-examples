@@ -1,7 +1,10 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
+import { SnackbarProvider } from 'notistack';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
+
 import { App } from './App';
+import { ConfigureAxios } from './ConfigureAxios';
 import { theme } from './theme';
 import { reportWebVitals } from './reportWebVitals';
 
@@ -9,7 +12,11 @@ ReactDOM.render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+      <ConfigureAxios>
+        <SnackbarProvider>
+          <App />
+        </SnackbarProvider>
+      </ConfigureAxios>
     </ThemeProvider>
   </StrictMode>,
   document.getElementById('root')

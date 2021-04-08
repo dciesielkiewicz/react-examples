@@ -3,6 +3,8 @@ import { AddTodo } from './AddTodo';
 
 const handleAddTodoSubmit = jest.fn();
 const resetForm = expect.any(Function);
+const setSubmitting = expect.any(Function);
+const checked = false;
 const title = 'Todo title';
 
 describe('AddTodo', () => {
@@ -49,7 +51,7 @@ describe('AddTodo', () => {
     });
 
     await waitFor(() => {
-      expect(handleAddTodoSubmit).toBeCalledWith({ title }, resetForm);
+      expect(handleAddTodoSubmit).toBeCalledWith({ title, checked }, { resetForm, setSubmitting });
     });
   });
 });

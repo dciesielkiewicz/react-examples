@@ -16,6 +16,7 @@ export const TodoList = () => {
     handleAddTodoSubmit,
     handleDeleteTodo,
     handleUpdateTodo,
+    loadingDeleteTodoId,
     loading,
     toggleTodoChecked,
     todos,
@@ -34,6 +35,7 @@ export const TodoList = () => {
       {todos.map((todo) => (
         <TodoItem
           key={todo.id}
+          loadingDeleteTodoId={loadingDeleteTodoId}
           handleDeleteTodoClick={handleDeleteTodoClick}
           handleUpdateTodo={handleUpdateTodo}
           toggleTodoChecked={toggleTodoChecked}

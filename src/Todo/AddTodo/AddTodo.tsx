@@ -4,10 +4,10 @@ import { Box, Grid, IconButton, makeStyles } from '@material-ui/core';
 import IconCheck from '@material-ui/icons/Check';
 import IconAdd from '@material-ui/icons/Add';
 
-import { Input } from 'components';
+import { Input, LoadingButton } from 'components';
 
 import { emptyTodo, FORM_FIELD_TITLE } from '../constants';
-import { INewTodo, TNewTodoResetForm } from '../types';
+import { INewTodo, INewTodoFormikHelpers } from '../types';
 import { validationSchema } from '../validationSchema';
 
 const useStyles = makeStyles(() => ({
@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface IAddTodoProps {
-  handleAddTodoSubmit: (todo: INewTodo, resetForm: TNewTodoResetForm) => void;
+  handleAddTodoSubmit: (todo: INewTodo, formikHelpers: INewTodoFormikHelpers) => void;
 }
 
 export const AddTodo = ({ handleAddTodoSubmit }: IAddTodoProps) => {
@@ -26,8 +26,8 @@ export const AddTodo = ({ handleAddTodoSubmit }: IAddTodoProps) => {
 
   const focusInput = () => inputRef.current?.focus();
 
-  const submitHandler = (values: INewTodo, { resetForm }: FormikHelpers<INewTodo>) => {
-    handleAddTodoSubmit(values, resetForm);
+  const submitHandler = (values: INewTodo, { resetForm, setSubmitting }: FormikHelpers<INewTodo>) => {
+    handleAddTodoSubmit(values, { resetForm, setSubmitting });
   };
 
   return (
@@ -38,32 +38,38 @@ export const AddTodo = ({ handleAddTodoSubmit }: IAddTodoProps) => {
       validateOnBlur={false}
       validationSchema={validationSchema}
     >
-      <Form>
-        <Box pt={1} pb={1} mb={2}>
-          <Grid container spacing={1} alignItems="center" justify="space-between">
-            <Grid item className={classes.inputColumn}>
-              <Field
-                component={Input}
-                inputProps={{
-                  ref: inputRef,
-                }}
-                name={FORM_FIELD_TITLE}
-                placeholder="Type your next todo"
-              />
+      {({ isSubmitting }) => (
+        <Form>
+          <Box pt={1} pb={1} mb={2}>
+            <Grid container spacing={1} alignItems="center" justify="space-between">
+              <Grid item className={classes.inputColumn}>
+                <Field
+                  component={Input}
+                  inputProps={{
+                    ref: inputRef,
+                  }}
+                  name={FORM_FIELD_TITLE}
+                  placeholder="Type your next todo"
+                />
+              </Grid>
+              <Grid item>
+                {isSubmitting ? (
+                  <LoadingButton />
+                ) : (
+                  <IconButton type="submit">
+                    <IconCheck />
+                  </IconButton>
+                )}
+              </Grid>
             </Grid>
-            <Grid item>
-              <IconButton type="submit">
-                <IconCheck />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Box>
-        <div>
-          <IconButton color="primary" onClick={focusInput} data-testid="focus-input-button">
-            <IconAdd />
-          </IconButton>
-        </div>
-      </Form>
+          </Box>
+          <div>
+            <IconButton color="primary" onClick={focusInput} data-testid="focus-input-button">
+              <IconAdd />
+            </IconButton>
+          </div>
+        </Form>
+      )}
     </Formik>
   );
 };

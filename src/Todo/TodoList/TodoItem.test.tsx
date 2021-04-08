@@ -4,11 +4,13 @@ import { ITodo } from '../types';
 
 const handleDeleteTodoClick = jest.fn();
 const handleUpdateTodo = jest.fn();
+const loadingDeleteTodoId = null;
 const newTitle = 'New todo title';
 const resetForm = expect.any(Function);
+const setSubmitting = expect.any(Function);
 const toggleTodoChecked = jest.fn();
 const todo: ITodo = {
-  id: 1,
+  id: 'todoId1',
   title: 'Todo title',
   checked: false,
 };
@@ -20,6 +22,7 @@ const newTodo: ITodo = {
 const props = {
   handleDeleteTodoClick,
   handleUpdateTodo,
+  loadingDeleteTodoId,
   toggleTodoChecked,
   todo,
 };
@@ -119,7 +122,7 @@ describe('TodoItem', () => {
     });
 
     await waitFor(() => {
-      expect(handleUpdateTodo).toBeCalledWith(newTodo, resetForm);
+      expect(handleUpdateTodo).toBeCalledWith(newTodo, { resetForm, setSubmitting });
     });
   });
 

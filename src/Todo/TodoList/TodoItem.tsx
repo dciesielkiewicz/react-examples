@@ -6,10 +6,10 @@ import IconCheck from '@material-ui/icons/Check';
 import IconDelete from '@material-ui/icons/Delete';
 import IconEdit from '@material-ui/icons/Edit';
 
-import { Input } from 'components';
+import { Input, LoadingButton } from 'components';
 
 import { FORM_FIELD_TITLE } from '../constants';
-import { ITodo, TTodoResetForm } from '../types';
+import { ITodo, ITodoFormikHelpers } from '../types';
 import { validationSchema } from '../validationSchema';
 
 const useStyles = makeStyles(({ palette, spacing }) => ({
@@ -29,7 +29,8 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
 
 interface ITodoItemProps {
   handleDeleteTodoClick: (todo: ITodo) => void;
-  handleUpdateTodo: (todo: ITodo, resetForm: TTodoResetForm) => void;
+  handleUpdateTodo: (todo: ITodo, formikHelpers: ITodoFormikHelpers) => Promise<void>;
+  loadingDeleteTodoId: ITodo['id'] | null;
   toggleTodoChecked: (todo: ITodo) => void;
   todo: ITodo;
 }
@@ -37,6 +38,7 @@ interface ITodoItemProps {
 export const TodoItem = ({
   handleDeleteTodoClick,
   handleUpdateTodo,
+  loadingDeleteTodoId,
   toggleTodoChecked,
   todo,
 }: ITodoItemProps) => {
@@ -50,9 +52,9 @@ export const TodoItem = ({
     setTimeout(() => inputRef.current?.focus());
   }
 
-  const submitHandler = (values: ITodo, { resetForm }: FormikHelpers<ITodo>) => {
+  const submitHandler = async (values: ITodo, { resetForm, setSubmitting }: FormikHelpers<ITodo>) => {
+    await handleUpdateTodo(values, { resetForm, setSubmitting });
     setEditable(false);
-    handleUpdateTodo(values, resetForm);
   };
 
   const toggleTodo = () => toggleTodoChecked(todo);
@@ -66,53 +68,66 @@ export const TodoItem = ({
       validateOnBlur={false}
       validationSchema={validationSchema}
     >
-      <Form>
-        <Box pt={1} pb={1} className={classes.wrapper}>
-          <Grid container spacing={1} alignItems="center" justify="space-between">
-            <Grid item>
-              <Checkbox checked={todo.checked} onChange={toggleTodo} />
-            </Grid>
-            <Grid item className={classes.inputColumn}>
-              {editable ? (
-                <Field
-                  className={classNames({
-                    [classes.checkedTodo]: todo.checked,
-                  })}
-                  component={Input}
-                  inputProps={{
-                    ref: inputRef,
-                  }}
-                  name={FORM_FIELD_TITLE}
-                  placeholder="Type your todo here"
-                />
-              ) : (
-                <div
-                  className={classNames(classes.clickableTodo, {
-                    [classes.checkedTodo]: todo.checked,
-                  })}
-                  onClick={toggleTodo}
-                >
-                  {todo.title}
-                </div>
-              )}
-            </Grid>
-            <Grid item>
-              {editable ? (
-                <IconButton type="submit">
-                  <IconCheck />
-                </IconButton>
-              ) : (
-                <IconButton onClick={enableEdit} data-testid="edit-todo">
-                  <IconEdit />
-                </IconButton>
-              )}
-              <IconButton onClick={() => handleDeleteTodoClick(todo)} data-testid="delete-todo">
-                <IconDelete />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Box>
-      </Form>
+      {({ isSubmitting }) => {
+        const submitButton = isSubmitting ? (
+          <LoadingButton />
+        ) : (
+          <IconButton type="submit">
+            <IconCheck />
+          </IconButton>
+        );
+        return (
+          <Form>
+            <Box pt={1} pb={1} className={classes.wrapper}>
+              <Grid container spacing={1} alignItems="center" justify="space-between">
+                <Grid item>
+                  <Checkbox checked={todo.checked} onChange={toggleTodo} />
+                </Grid>
+                <Grid item className={classes.inputColumn}>
+                  {editable ? (
+                    <Field
+                      className={classNames({
+                        [classes.checkedTodo]: todo.checked,
+                      })}
+                      component={Input}
+                      inputProps={{
+                        ref: inputRef,
+                      }}
+                      name={FORM_FIELD_TITLE}
+                      placeholder="Type your todo here"
+                    />
+                  ) : (
+                    <div
+                      className={classNames(classes.clickableTodo, {
+                        [classes.checkedTodo]: todo.checked,
+                      })}
+                      onClick={toggleTodo}
+                    >
+                      {todo.title}
+                    </div>
+                  )}
+                </Grid>
+                <Grid item>
+                  {editable ? (
+                    submitButton
+                  ) : (
+                    <IconButton onClick={enableEdit} data-testid="edit-todo">
+                      <IconEdit />
+                    </IconButton>
+                  )}
+                  {loadingDeleteTodoId === todo.id ? (
+                    <LoadingButton />
+                  ) : (
+                    <IconButton onClick={() => handleDeleteTodoClick(todo)} data-testid="delete-todo">
+                      <IconDelete />
+                    </IconButton>
+                  )}
+                </Grid>
+              </Grid>
+            </Box>
+          </Form>
+        )
+      }}
     </Formik>
   );
 };
