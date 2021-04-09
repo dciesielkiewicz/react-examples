@@ -64,7 +64,7 @@ export const AddTodo = ({ handleAddTodoSubmit }: IAddTodoProps) => {
             </Grid>
           </Box>
           <div>
-            <IconButton color="primary" onClick={focusInput} data-testid="focus-input-button">
+            <IconButton color="primary" onClick={focusInput} aria-label="Focus add todo input">
               <IconAdd />
             </IconButton>
           </div>

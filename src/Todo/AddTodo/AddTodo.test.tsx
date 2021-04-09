@@ -9,13 +9,13 @@ const title = 'Todo title';
 
 describe('AddTodo', () => {
   test('Should properly focus on title input', () => {
-    const { getByPlaceholderText, getByTestId } = render(
+    const { getByLabelText, getByPlaceholderText } = render(
       <AddTodo handleAddTodoSubmit={handleAddTodoSubmit} />
     );
     const titleInput = getByPlaceholderText('Type your next todo');
     expect(titleInput).not.toHaveFocus();
 
-    fireEvent.click(getByTestId('focus-input-button'));
+    fireEvent.click(getByLabelText('Focus add todo input'));
     expect(titleInput).toHaveFocus();
   });
 

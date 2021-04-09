@@ -3,7 +3,7 @@ import { Box, Button, Typography } from '@material-ui/core';
 
 import { TODO_ROUTE } from 'routes';
 
-export const Welcome = () => (
+export const Home = () => (
   <>
     <Box mb={2}>
       <Typography variant='h4'>

@@ -5,16 +5,16 @@ import {
 } from 'react-router-dom';
 
 import { Layout } from './components';
-import { TODO_ROUTE, WELCOME_ROUTE } from './routes';
+import { HOME_ROUTE, TODO_ROUTE } from './routes';
+import { Home } from './Home';
 import { Todo } from './Todo';
-import { Welcome } from './Welcome';
 
 export const App = () => {
   return (
     <Router>
       <Layout>
         <Switch>
-          <Route exact path={WELCOME_ROUTE} component={Welcome} />
+          <Route exact path={HOME_ROUTE} component={Home} />
           <Route exact path={TODO_ROUTE} component={Todo} />
         </Switch>
       </Layout>

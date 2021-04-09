@@ -48,7 +48,7 @@ export const useTodos = () => {
   const updateTodo = async (todo: ITodo, { resetForm, setSubmitting }: ITodoFormikHelpers) => {
     const { id: todoId, ...updateParams } = todo;
     try {
-      const resposnse = await axios.put<ITodo>(`/todos/${todoId}`, { todo: updateParams});
+      const resposnse = await axios.put<ITodo>(`/todos/${todoId}`, { todo: updateParams });
       const cloneTodos = [...todos];
       const index = todos.findIndex(({ id }) => id === todoId);
       cloneTodos[index] = resposnse.data;

@@ -111,14 +111,14 @@ export const TodoItem = ({
                   {editable ? (
                     submitButton
                   ) : (
-                    <IconButton onClick={enableEdit} data-testid="edit-todo">
+                    <IconButton onClick={enableEdit} aria-label="Edit todo">
                       <IconEdit />
                     </IconButton>
                   )}
                   {loadingDeleteTodoId === todo.id ? (
                     <LoadingButton />
                   ) : (
-                    <IconButton onClick={() => handleDeleteTodoClick(todo)} data-testid="delete-todo">
+                    <IconButton onClick={() => handleDeleteTodoClick(todo)} aria-label="Delete todo">
                       <IconDelete />
                     </IconButton>
                   )}

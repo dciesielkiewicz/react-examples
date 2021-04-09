@@ -14,7 +14,7 @@ export const Layout = ({ children }: ILayoutProps) => (
     <Container>
       <Grid container justify="center">
         <Grid item xs={12} sm={8} lg={6}>
-          <Box pt={8} pb={4}>
+          <Box pt={6} pb={4}>
             {children}
           </Box>
         </Grid>

@@ -15,7 +15,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
 import ListIcon from '@material-ui/icons/List';
 
-import { TODO_ROUTE, WELCOME_ROUTE } from 'routes';
+import { HOME_ROUTE, TODO_ROUTE } from 'routes';
 
 import { useMenuOpened } from './useMenuOpened';
 
@@ -40,7 +40,7 @@ export const Header = () => {
       <Drawer anchor="left" open={isMenuOpened} onClose={closeMenu}>
         <Box pt={2}>
           <List component="nav" aria-label="Navigation menu" className={classes.menu}>
-            <ListItem button component={Link} to={WELCOME_ROUTE} onClick={closeMenu}>
+            <ListItem button component={Link} to={HOME_ROUTE} onClick={closeMenu}>
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>

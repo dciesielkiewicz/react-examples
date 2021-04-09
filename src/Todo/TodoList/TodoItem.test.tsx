@@ -1,4 +1,4 @@
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, getByLabelText, render, waitFor } from '@testing-library/react';
 import { TodoItem } from './TodoItem';
 import { ITodo } from '../types';
 
@@ -44,18 +44,18 @@ describe('TodoItem', () => {
   });
 
   test('Should switch form to editable while clicking edit button', () => {
-    const { getByTestId, queryByText, getByPlaceholderText } = render(<TodoItem {...props} />);
-    fireEvent.click(getByTestId('edit-todo'));
+    const { getByLabelText, queryByText, getByPlaceholderText } = render(<TodoItem {...props} />);
+    fireEvent.click(getByLabelText('Edit todo'));
 
     expect(queryByText(todo.title)).toBeNull();
     expect(getByPlaceholderText('Type your todo here')).toBeInTheDocument();
   });
 
   test('Should properly switch form to editable while clicking edit button and focus input', async () => {
-    const { getByTestId, queryByText, getByPlaceholderText } = render(<TodoItem {...props} />);
+    const { getByLabelText, getByPlaceholderText, queryByText } = render(<TodoItem {...props} />);
 
     act(() => {
-      fireEvent.click(getByTestId('edit-todo'));
+      fireEvent.click(getByLabelText('Edit todo'));
     });
 
     expect(queryByText(todo.title)).toBeNull();
@@ -70,15 +70,15 @@ describe('TodoItem', () => {
   test('Should display missing title validation', async () => {
     const {
       container,
+      getByLabelText,
       getByPlaceholderText,
-      getByTestId,
       getByText,
       queryByText,
     } = render(<TodoItem {...props} />);
     expect(queryByText('Title is required')).toBeNull();
 
     act(() => {
-      fireEvent.click(getByTestId('edit-todo'));
+      fireEvent.click(getByLabelText('Edit todo'));
     });
 
     const titleInput = getByPlaceholderText('Type your todo here');
@@ -100,14 +100,14 @@ describe('TodoItem', () => {
   test('Should properly submit updated todo', async () => {
     const {
       container,
+      getByLabelText,
       getByPlaceholderText,
-      getByTestId,
       queryByText,
     } = render(<TodoItem {...props} />);
     expect(queryByText('Title is required')).toBeNull();
 
     act(() => {
-      fireEvent.click(getByTestId('edit-todo'));
+      fireEvent.click(getByLabelText('Edit todo'));
     });
 
     const titleInput = getByPlaceholderText('Type your todo here');
@@ -127,8 +127,8 @@ describe('TodoItem', () => {
   });
 
   test('Should properly call delete handler', () => {
-    const { getByTestId } = render(<TodoItem {...props} />);
-    fireEvent.click(getByTestId('delete-todo'));
+    const { getByLabelText } = render(<TodoItem {...props} />);
+    fireEvent.click(getByLabelText('Delete todo'));
 
     expect(handleDeleteTodoClick).toBeCalledWith(todo);
   });
