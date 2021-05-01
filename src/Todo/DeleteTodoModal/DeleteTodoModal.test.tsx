@@ -4,7 +4,7 @@ import { ITodo } from '../types';
 import { DeleteTodoModal } from './DeleteTodoModal';
 
 const todo: ITodo = {
-  id: 1,
+  id: 'todoId1',
   title: 'Todo 1',
   checked: false,
 }

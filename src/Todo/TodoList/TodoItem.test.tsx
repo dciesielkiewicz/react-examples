@@ -1,4 +1,4 @@
-import { act, fireEvent, getByLabelText, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { TodoItem } from './TodoItem';
 import { ITodo } from '../types';
 

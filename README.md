@@ -1,6 +1,9 @@
-# Getting Started with Create React App
+# React examples
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+In this repository you can find my code samples imlemented in Todo app
+
+<img width="720" alt="Todo App Screenshot" src="https://user-images.githubusercontent.com/13467118/116783724-b3979380-aa90-11eb-9891-a430fd665527.png">
+
 
 ## Available Scripts
 
