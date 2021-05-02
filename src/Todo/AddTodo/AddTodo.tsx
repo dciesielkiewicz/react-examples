@@ -17,17 +17,17 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface IAddTodoProps {
-  handleAddTodoSubmit: (todo: INewTodo, formikHelpers: INewTodoFormikHelpers) => void;
+  addTodo: (todo: INewTodo, formikHelpers: INewTodoFormikHelpers) => void;
 }
 
-export const AddTodo = ({ handleAddTodoSubmit }: IAddTodoProps) => {
+export const AddTodo = ({ addTodo }: IAddTodoProps) => {
   const classes = useStyles();
   const inputRef = useRef<HTMLInputElement>();
 
   const focusInput = () => inputRef.current?.focus();
 
   const submitHandler = (values: INewTodo, { resetForm, setSubmitting }: FormikHelpers<INewTodo>) => {
-    handleAddTodoSubmit(values, { resetForm, setSubmitting });
+    addTodo(values, { resetForm, setSubmitting });
   };
 
   return (

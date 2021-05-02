@@ -29,18 +29,18 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
 
 interface ITodoItemProps {
   handleDeleteTodoClick: (todo: ITodo) => void;
-  handleUpdateTodo: (todo: ITodo, formikHelpers: ITodoFormikHelpers) => Promise<void>;
   loadingDeleteTodoId: ITodo['id'] | null;
-  toggleTodoChecked: (todo: ITodo) => void;
+  toggleTodo: (todo: ITodo) => void;
   todo: ITodo;
+  updateTodo: (todo: ITodo, formikHelpers: ITodoFormikHelpers) => Promise<void>;
 }
 
 export const TodoItem = ({
   handleDeleteTodoClick,
-  handleUpdateTodo,
   loadingDeleteTodoId,
-  toggleTodoChecked,
+  toggleTodo,
   todo,
+  updateTodo,
 }: ITodoItemProps) => {
   const classes = useStyles();
   const inputRef = useRef<HTMLInputElement>();
@@ -53,11 +53,11 @@ export const TodoItem = ({
   }
 
   const submitHandler = async (values: ITodo, { resetForm, setSubmitting }: FormikHelpers<ITodo>) => {
-    await handleUpdateTodo(values, { resetForm, setSubmitting });
+    await updateTodo(values, { resetForm, setSubmitting });
     setEditable(false);
   };
 
-  const toggleTodo = () => toggleTodoChecked(todo);
+  const handleToggleTodoChange = () => toggleTodo(todo);
 
   return (
     <Formik
@@ -81,7 +81,11 @@ export const TodoItem = ({
             <Box pt={1} pb={1} className={classes.wrapper}>
               <Grid container spacing={1} alignItems="center" justify="space-between">
                 <Grid item>
-                  <Checkbox checked={todo.checked} onChange={toggleTodo} />
+                  <Checkbox
+                    checked={todo.checked}
+                    inputProps={{ 'aria-label': 'Toggle todo' }}
+                    onChange={handleToggleTodoChange}
+                  />
                 </Grid>
                 <Grid item className={classes.inputColumn}>
                   {editable ? (
@@ -101,7 +105,7 @@ export const TodoItem = ({
                       className={classNames(classes.clickableTodo, {
                         [classes.checkedTodo]: todo.checked,
                       })}
-                      onClick={toggleTodo}
+                      onClick={handleToggleTodoChange}
                     >
                       {todo.title}
                     </div>

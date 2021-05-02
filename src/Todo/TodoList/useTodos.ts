@@ -44,22 +44,6 @@ export const useTodos = () => {
     }
   }
 
-
-  const updateTodo = async (todo: ITodo, { resetForm, setSubmitting }: ITodoFormikHelpers) => {
-    const { id: todoId, ...updateParams } = todo;
-    try {
-      const resposnse = await axios.put<ITodo>(`/todos/${todoId}`, { todo: updateParams });
-      const cloneTodos = [...todos];
-      const index = todos.findIndex(({ id }) => id === todoId);
-      cloneTodos[index] = resposnse.data;
-      setTodos(cloneTodos);
-      resetForm();
-    } catch {
-      enqueueSnackbar('Error while updating todo', { variant: 'error' });
-      setSubmitting(false);
-    }
-  }
-
   const toggleTodo = async (todo: ITodo) => {
     const oldTodos = [...todos];
     const newTodos = [...todos];
@@ -77,32 +61,32 @@ export const useTodos = () => {
     }
   }
 
+  const updateTodo = async (todo: ITodo, { resetForm, setSubmitting }: ITodoFormikHelpers) => {
+    const { id: todoId, ...updateParams } = todo;
+    try {
+      const resposnse = await axios.put<ITodo>(`/todos/${todoId}`, { todo: updateParams });
+      const cloneTodos = [...todos];
+      const index = todos.findIndex(({ id }) => id === todoId);
+      cloneTodos[index] = resposnse.data;
+      setTodos(cloneTodos);
+      resetForm();
+    } catch {
+      enqueueSnackbar('Error while updating todo', { variant: 'error' });
+      setSubmitting(false);
+    }
+  }
 
   useEffect(() => {
     fetchTodos();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleAddTodoSubmit = (todo: INewTodo, formikHelpers: INewTodoFormikHelpers) => {
-    addTodo(todo, formikHelpers);
-  };
-
-  const handleDeleteTodo = (todoId: ITodo['id']) => {
-    deleteTodo(todoId)
-  };
-
-  const handleUpdateTodo = (todo: ITodo, formikHelpers: ITodoFormikHelpers) => updateTodo(todo, formikHelpers);
-
-  const toggleTodoChecked = (todo: ITodo) => {
-    toggleTodo(todo);
-  }
-
   return {
-    handleAddTodoSubmit,
-    handleDeleteTodo,
-    handleUpdateTodo,
+    addTodo,
+    deleteTodo,
     loading,
     loadingDeleteTodoId,
-    toggleTodoChecked,
+    toggleTodo,
     todos,
+    updateTodo,
   };
 };

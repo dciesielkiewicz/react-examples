@@ -1,7 +1,7 @@
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { AddTodo } from './AddTodo';
 
-const handleAddTodoSubmit = jest.fn();
+const addTodo = jest.fn();
 const resetForm = expect.any(Function);
 const setSubmitting = expect.any(Function);
 const checked = false;
@@ -10,7 +10,7 @@ const title = 'Todo title';
 describe('AddTodo', () => {
   test('Should properly focus on title input', () => {
     const { getByLabelText, getByPlaceholderText } = render(
-      <AddTodo handleAddTodoSubmit={handleAddTodoSubmit} />
+      <AddTodo addTodo={addTodo} />
     );
     const titleInput = getByPlaceholderText('Type your next todo');
     expect(titleInput).not.toHaveFocus();
@@ -21,7 +21,7 @@ describe('AddTodo', () => {
 
   test('Should display missing title validation', async () => {
     const { container, getByText, queryByText } = render(
-      <AddTodo handleAddTodoSubmit={handleAddTodoSubmit} />
+      <AddTodo addTodo={addTodo} />
     );
     expect(queryByText('Title is required')).toBeNull();
 
@@ -37,7 +37,7 @@ describe('AddTodo', () => {
 
   test('Should properly submit new todo', async () => {
     const { container, getByPlaceholderText } = render(
-      <AddTodo handleAddTodoSubmit={handleAddTodoSubmit} />
+      <AddTodo addTodo={addTodo} />
     );
     const titleInput = getByPlaceholderText('Type your next todo');
 
@@ -51,7 +51,7 @@ describe('AddTodo', () => {
     });
 
     await waitFor(() => {
-      expect(handleAddTodoSubmit).toBeCalledWith({ title, checked }, { resetForm, setSubmitting });
+      expect(addTodo).toBeCalledWith({ title, checked }, { resetForm, setSubmitting });
     });
   });
 });

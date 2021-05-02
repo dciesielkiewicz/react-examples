@@ -3,20 +3,20 @@ import { ITodo } from '../types';
 
 interface IDeleteTodoModalProps {
   closeModal: () => void;
-  handleDeleteTodo: (todoId: ITodo['id']) => void;
+  deleteTodo: (todoId: ITodo['id']) => void;
   isOpened: boolean;
   todo: ITodo;
 }
 
 export const DeleteTodoModal = ({
   closeModal,
-  handleDeleteTodo,
+  deleteTodo,
   isOpened,
   todo,
 }: IDeleteTodoModalProps) => {
 
   const confirmDeleteTodo = () => {
-    handleDeleteTodo(todo.id);
+    deleteTodo(todo.id);
     closeModal();
   };
 

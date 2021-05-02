@@ -1,7 +1,25 @@
-import { render } from '@testing-library/react';
+import moxios from 'moxios';
+import { render, waitFor } from '@testing-library/react';
 import { Todo } from './Todo';
 
-test('Should render Todo heading', () => {
-  const { getByText } = render(<Todo />);
-  expect(getByText('Todo list')).toBeInTheDocument();
+describe('Todo', () => {
+  beforeEach(() => {
+    moxios.install()
+  })
+
+  afterEach(() => {
+    moxios.uninstall()
+  })
+
+  test('Should render Todo heading', async () => {
+    moxios.stubRequest('/todos', {
+      status: 200,
+      response: [],
+    })
+
+    const { getByText } = render(<Todo />);
+    await waitFor(() => {
+      expect(getByText('Todo list')).toBeInTheDocument();
+    });
+  });
 });

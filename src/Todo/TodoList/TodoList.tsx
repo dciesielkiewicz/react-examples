@@ -5,20 +5,20 @@ import { useModal } from 'hooks';
 
 import { AddTodo } from '../AddTodo';
 import { DeleteTodoModal } from '../DeleteTodoModal';
+import { TodoItem } from '../TodoItem';
 import { ITodo } from '../types';
 
-import { TodoItem } from './TodoItem';
 import { useTodos } from './useTodos';
 
 export const TodoList = () => {
   const [deleteTodoItem, setDeleteTodoItem] = useState<ITodo | undefined>();
   const {
-    handleAddTodoSubmit,
-    handleDeleteTodo,
-    handleUpdateTodo,
+    addTodo,
+    deleteTodo,
+    updateTodo,
     loadingDeleteTodoId,
     loading,
-    toggleTodoChecked,
+    toggleTodo,
     todos,
   } = useTodos();
   const { closeModal, isOpened, openModal } = useModal();
@@ -37,16 +37,16 @@ export const TodoList = () => {
           key={todo.id}
           loadingDeleteTodoId={loadingDeleteTodoId}
           handleDeleteTodoClick={handleDeleteTodoClick}
-          handleUpdateTodo={handleUpdateTodo}
-          toggleTodoChecked={toggleTodoChecked}
+          toggleTodo={toggleTodo}
           todo={todo}
+          updateTodo={updateTodo}
         />
       ))}
-      <AddTodo handleAddTodoSubmit={handleAddTodoSubmit} />
+      <AddTodo addTodo={addTodo} />
       {deleteTodoItem && (
         <DeleteTodoModal
           closeModal={closeModal}
-          handleDeleteTodo={handleDeleteTodo}
+          deleteTodo={deleteTodo}
           isOpened={isOpened}
           todo={deleteTodoItem}
         />

@@ -10,11 +10,11 @@ const todo: ITodo = {
 }
 
 const closeModal = jest.fn();
-const handleDeleteTodo = jest.fn();
+const deleteTodo = jest.fn();
 
 const props = {
   closeModal,
-  handleDeleteTodo,
+  deleteTodo,
   isOpened: true,
   todo,
 }
@@ -50,6 +50,6 @@ describe('DeleteTodoModal', () => {
   test('Should properly trigger delete action', () => {;
     const { getByText } = render(<DeleteTodoModal {...props} />);
     fireEvent.click(getByText('Delete'));
-    expect(handleDeleteTodo).toBeCalledWith(todo.id);
+    expect(deleteTodo).toBeCalledWith(todo.id);
   });
 });
