@@ -1,16 +1,23 @@
+import { AxiosResponse } from 'axios';
 import { FormikState } from 'formik';
 
-export interface INewTodo {
+export interface IFormTodo {
   title: string;
   checked: boolean;
 }
 
-export interface ITodo extends INewTodo {
+export interface ITodo extends IFormTodo {
   id: string;
 }
 
-export interface INewTodoFormikHelpers {
-  resetForm: (nextState?: Partial<FormikState<INewTodo>>) => void;
+export interface ITodoVariables {
+  todo: IFormTodo;
+}
+
+export type TTodoResponse = AxiosResponse<ITodo>;
+
+export interface IFormTodoFormikHelpers {
+  resetForm: (nextState?: Partial<FormikState<IFormTodo>>) => void;
   setSubmitting: (isSubmitting: boolean) => void;
 }
 

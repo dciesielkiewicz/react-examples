@@ -7,7 +7,7 @@ import IconAdd from '@material-ui/icons/Add';
 import { Input, LoadingButton } from 'components';
 
 import { emptyTodo, FORM_FIELD_TITLE } from '../constants';
-import { INewTodo, INewTodoFormikHelpers } from '../types';
+import { IFormTodo, IFormTodoFormikHelpers } from '../types';
 import { validationSchema } from '../validationSchema';
 
 const useStyles = makeStyles(() => ({
@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface IAddTodoProps {
-  addTodo: (todo: INewTodo, formikHelpers: INewTodoFormikHelpers) => void;
+  addTodo: (todo: IFormTodo, formikHelpers: IFormTodoFormikHelpers) => void;
 }
 
 export const AddTodo = ({ addTodo }: IAddTodoProps) => {
@@ -26,7 +26,7 @@ export const AddTodo = ({ addTodo }: IAddTodoProps) => {
 
   const focusInput = () => inputRef.current?.focus();
 
-  const submitHandler = (values: INewTodo, { resetForm, setSubmitting }: FormikHelpers<INewTodo>) => {
+  const submitHandler = (values: IFormTodo, { resetForm, setSubmitting }: FormikHelpers<IFormTodo>) => {
     addTodo(values, { resetForm, setSubmitting });
   };
 
@@ -41,7 +41,7 @@ export const AddTodo = ({ addTodo }: IAddTodoProps) => {
       {({ isSubmitting }) => (
         <Form>
           <Box pt={1} pb={1} mb={2}>
-            <Grid container spacing={1} alignItems="center" justify="space-between">
+            <Grid container spacing={1} alignItems="center" justifyContent="space-between">
               <Grid item className={classes.inputColumn}>
                 <Field
                   component={Input}

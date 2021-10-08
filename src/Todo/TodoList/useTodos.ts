@@ -1,7 +1,14 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
-import { INewTodo, INewTodoFormikHelpers, ITodo, ITodoFormikHelpers } from '../types';
+import {
+  IFormTodo,
+  IFormTodoFormikHelpers,
+  ITodo,
+  ITodoFormikHelpers,
+  TTodoResponse,
+  ITodoVariables,
+} from '../types';
 
 export const useTodos = () => {
   const [loading, setLoading] = useState(true);
@@ -21,9 +28,9 @@ export const useTodos = () => {
     }
   };
 
-  const addTodo = async (todo: INewTodo, { resetForm, setSubmitting }: INewTodoFormikHelpers) => {
+  const addTodo = async (todo: IFormTodo, { resetForm, setSubmitting }: IFormTodoFormikHelpers) => {
     try {
-      const response = await axios.post<ITodo>('/todos', { todo });
+      const response = await axios.post<ITodoVariables, TTodoResponse>('/todos', { todo });
       setTodos([...todos, response.data]);
       resetForm();
     } catch {
@@ -35,7 +42,7 @@ export const useTodos = () => {
   const deleteTodo = async (todoId: ITodo['id']) => {
     setLoadingDeleteTodoId(todoId);
     try {
-      await axios.delete<ITodo>(`/todos/${todoId}`);
+      await axios.delete(`/todos/${todoId}`);
       setTodos(todos.filter(({ id }) => id !== todoId));
     } catch {
       enqueueSnackbar('Error while deleting todo', { variant: 'error' });
@@ -54,7 +61,7 @@ export const useTodos = () => {
     newTodos[index] = updatedTodo;
     setTodos(newTodos);
     try {
-      await axios.put<ITodo>(`/todos/${todoId}`, { todo: updateParams });
+      await axios.put<ITodoVariables>(`/todos/${todoId}`, { todo: updateParams });
     } catch {
       enqueueSnackbar('Error while toggling todo', { variant: 'error' });
       setTodos(oldTodos);
@@ -64,7 +71,7 @@ export const useTodos = () => {
   const updateTodo = async (todo: ITodo, { resetForm, setSubmitting }: ITodoFormikHelpers) => {
     const { id: todoId, ...updateParams } = todo;
     try {
-      const resposnse = await axios.put<ITodo>(`/todos/${todoId}`, { todo: updateParams });
+      const resposnse = await axios.put<ITodoVariables, TTodoResponse>(`/todos/${todoId}`, { todo: updateParams });
       const cloneTodos = [...todos];
       const index = todos.findIndex(({ id }) => id === todoId);
       cloneTodos[index] = resposnse.data;

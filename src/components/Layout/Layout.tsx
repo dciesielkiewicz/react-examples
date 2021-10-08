@@ -12,7 +12,7 @@ export const Layout = ({ children }: ILayoutProps) => (
   <Background>
     <Header />
     <Container>
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid item xs={12} sm={8} lg={6}>
           <Box pt={6} pb={4}>
             {children}

@@ -1,7 +1,7 @@
 import moxios from 'moxios';
 import { act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-import { INewTodo, ITodo } from '../types';
+import { IFormTodo, ITodo } from '../types';
 import { useTodos } from './useTodos';
 import { waitFor } from '@testing-library/react';
 
@@ -17,7 +17,7 @@ const checkedTodo1: ITodo = {
   ...todo1,
   checked: true,
 };
-const newTodo2: INewTodo = {
+const newTodo2: IFormTodo = {
   title: 'Title 2',
   checked: false,
 };

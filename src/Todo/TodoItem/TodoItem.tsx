@@ -79,7 +79,7 @@ export const TodoItem = ({
         return (
           <Form>
             <Box pt={1} pb={1} className={classes.wrapper}>
-              <Grid container spacing={1} alignItems="center" justify="space-between">
+              <Grid container spacing={1} alignItems="center" justifyContent="space-between">
                 <Grid item>
                   <Checkbox
                     checked={todo.checked}

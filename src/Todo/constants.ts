@@ -1,6 +1,6 @@
-import { INewTodo } from './types';
+import { IFormTodo } from './types';
 
-export const emptyTodo: INewTodo = {
+export const emptyTodo: IFormTodo = {
   title: '',
   checked: false,
 };
