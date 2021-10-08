@@ -1,16 +1,20 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme, Theme } from '@mui/material';
 
-export const theme = createMuiTheme({
+declare module '@mui/styles' {
+  interface DefaultTheme extends Theme {}
+}
+
+export const theme = createTheme({
   palette: {
     primary: {
       main: '#1976d2',
     },
   },
-  overrides: {
-    MuiDialogActions: {
-      root: {
-        padding: 16,
-      }
-    }
-  }
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        variant: 'standard',
+      },
+    },
+  },
 });

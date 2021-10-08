@@ -1,9 +1,8 @@
 import moxios from 'moxios';
-import { act } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { IFormTodo, ITodo } from '../types';
 import { useTodos } from './useTodos';
-import { waitFor } from '@testing-library/react';
 
 const resetForm = jest.fn;
 const setSubmitting = jest.fn;

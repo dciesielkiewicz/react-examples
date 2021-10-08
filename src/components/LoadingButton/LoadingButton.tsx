@@ -1,4 +1,4 @@
-import { CircularProgress, IconButton } from '@material-ui/core';
+import { CircularProgress, IconButton } from '@mui/material';
 
 export const LoadingButton = () => (
   <IconButton type="button" disableRipple>

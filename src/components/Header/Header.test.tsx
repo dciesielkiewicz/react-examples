@@ -1,6 +1,6 @@
-import { MemoryRouter } from 'react-router-dom'
-import { duration } from '@material-ui/core';
-import { fireEvent, render } from '@testing-library/react';
+import { duration } from '@mui/material';
+import { fireEvent } from '@testing-library/react';
+import { render } from 'testUtils';
 import { Header } from './Header';
 
 describe('Header', () => {
@@ -10,7 +10,7 @@ describe('Header', () => {
   });
 
   test('Should properly open and close navigation', () => {
-    const { getByLabelText, getByText, queryByLabelText } = render(<Header />, { wrapper: MemoryRouter });
+    const { getByLabelText, getByText, queryByLabelText } = render(<Header />);
     expect(queryByLabelText('Navigation menu')).toBeNull();
 
     fireEvent.click(getByLabelText('Toggle menu'));

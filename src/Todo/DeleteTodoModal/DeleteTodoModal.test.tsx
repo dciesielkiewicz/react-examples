@@ -1,5 +1,6 @@
-import { duration } from '@material-ui/core';
-import { fireEvent, render } from '@testing-library/react';
+import { duration } from '@mui/material';
+import { fireEvent } from '@testing-library/react';
+import { render } from 'testUtils';
 import { ITodo } from '../types';
 import { DeleteTodoModal } from './DeleteTodoModal';
 

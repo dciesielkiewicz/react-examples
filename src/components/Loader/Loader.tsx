@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from '@material-ui/core';
+import { Box, CircularProgress } from '@mui/material';
 
 export const Loader = () => (
   <Box p={4} display="flex" alignItems="center" justifyContent="center">

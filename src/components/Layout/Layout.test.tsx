@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render } from 'testUtils';
 import { Layout } from './Layout';
 
 const children = 'children';

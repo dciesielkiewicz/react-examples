@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { SnackbarProvider } from 'notistack';
-import { CssBaseline, ThemeProvider } from '@material-ui/core';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import { App } from './App';
 import { ConfigureAxios } from './ConfigureAxios';

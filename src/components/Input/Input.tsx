@@ -1,6 +1,7 @@
 import { getIn, FieldProps } from 'formik';
 import classNames from 'classnames';
-import { FormHelperText, makeStyles, TextField, TextFieldProps } from '@material-ui/core';
+import { FormHelperText, TextField, TextFieldProps } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(({ typography }) => ({
   root: {

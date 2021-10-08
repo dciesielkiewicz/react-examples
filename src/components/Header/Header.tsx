@@ -8,12 +8,12 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  makeStyles,
   Toolbar,
-} from '@material-ui/core';
-import HomeIcon from '@material-ui/icons/Home';
-import MenuIcon from '@material-ui/icons/Menu';
-import ListIcon from '@material-ui/icons/List';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import HomeIcon from '@mui/icons-material/Home';
+import MenuIcon from '@mui/icons-material/Menu';
+import ListIcon from '@mui/icons-material/List';
 
 import { HOME_ROUTE, TODO_ROUTE } from 'routes';
 

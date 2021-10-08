@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Box, Container, Grid } from "@material-ui/core";
+import { Box, Container, Grid } from '@mui/material';
 
 import { Background } from '../Background';
 import { Header } from '../Header';

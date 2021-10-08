@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
 import { Field, Form, Formik, FormikHelpers } from 'formik';
 import classNames from 'classnames';
-import { Box, Checkbox, Grid, IconButton, makeStyles } from '@material-ui/core';
-import IconCheck from '@material-ui/icons/Check';
-import IconDelete from '@material-ui/icons/Delete';
-import IconEdit from '@material-ui/icons/Edit';
+import { Box, Checkbox, Grid, IconButton } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import IconCheck from '@mui/icons-material/Check';
+import IconDelete from '@mui/icons-material/Delete';
+import IconEdit from '@mui/icons-material/Edit';
 
 import { Input, LoadingButton } from 'components';
 
@@ -12,7 +13,7 @@ import { FORM_FIELD_TITLE } from '../constants';
 import { ITodo, ITodoFormikHelpers } from '../types';
 import { validationSchema } from '../validationSchema';
 
-const useStyles = makeStyles(({ palette, spacing }) => ({
+const useStyles = makeStyles(({ palette, typography }) => ({
   wrapper: {
     borderBottom: `1px solid ${palette.grey[300]}`,
   },
@@ -23,6 +24,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     textDecoration: 'line-through',
   },
   clickableTodo: {
+    fontSize: typography.fontSize,
     cursor: 'pointer',
   },
 }));

@@ -1,5 +1,6 @@
 import moxios from 'moxios';
-import { render, waitFor } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
+import { render } from 'testUtils';
 import { Todo } from './Todo';
 
 describe('Todo', () => {
