@@ -1,8 +1,14 @@
 import { duration } from '@mui/material';
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { ITodo, deleteTodo as deleteTodoRequest } from '../../api';
 import { render } from '../../testUtils';
-import { ITodo } from '../types';
 import { DeleteTodoModal } from './DeleteTodoModal';
+
+const deleteTodo = deleteTodoRequest as jest.Mock;
+
+jest.mock('../../api/todos/requests', () => ({
+  deleteTodo: jest.fn(),
+}));
 
 const todo: ITodo = {
   id: 'todoId1',
@@ -11,11 +17,9 @@ const todo: ITodo = {
 }
 
 const closeModal = jest.fn();
-const deleteTodo = jest.fn();
 
 const props = {
   closeModal,
-  deleteTodo,
   isOpened: true,
   todo,
 }
@@ -48,9 +52,11 @@ describe('DeleteTodoModal', () => {
     }, duration.leavingScreen);
   });
 
-  test('Should properly trigger delete action', () => {
+  test('Should properly trigger delete action', async () => {
     const { getByText } = render(<DeleteTodoModal {...props} />);
     fireEvent.click(getByText('Delete'));
-    expect(deleteTodo).toHaveBeenCalledWith(todo.id);
+    await waitFor(() => {
+      expect(deleteTodo).toHaveBeenCalledWith({ id: todo.id });
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { IFormTodo } from './types';
+import { IFormTodo } from '../api';
 
 export const emptyTodo: IFormTodo = {
   title: '',

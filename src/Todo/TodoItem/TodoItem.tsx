@@ -7,27 +7,25 @@ import IconEdit from '@mui/icons-material/Edit';
 
 import { Input, LoadingButton } from '../../components';
 
+import { ITodo } from '../../api';
 import { FORM_FIELD_TITLE } from '../constants';
-import { ITodo, ITodoFormikHelpers } from '../types';
 import { validationSchema } from '../validationSchema';
+import { useToggleTodo } from './useToggleTodo';
+import { useUpdateTodo } from './useUpdateTodo';
 
 interface ITodoItemProps {
   handleDeleteTodoClick: (todo: ITodo) => void;
-  loadingDeleteTodoId: ITodo['id'] | null;
-  toggleTodo: (todo: ITodo) => void;
   todo: ITodo;
-  updateTodo: (todo: ITodo, formikHelpers: ITodoFormikHelpers) => Promise<void>;
 }
 
 export const TodoItem = ({
   handleDeleteTodoClick,
-  loadingDeleteTodoId,
-  toggleTodo,
   todo,
-  updateTodo,
 }: ITodoItemProps) => {
   const inputRef = useRef<HTMLInputElement>();
   const [editable, setEditable] = useState(false);
+  const { updateTodo } = useUpdateTodo();
+  const { toggleTodo } = useToggleTodo();
 
   const enableEdit = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -36,11 +34,18 @@ export const TodoItem = ({
   }
 
   const submitHandler = async (values: ITodo, { resetForm, setSubmitting }: FormikHelpers<ITodo>) => {
-    await updateTodo(values, { resetForm, setSubmitting });
-    setEditable(false);
+    await updateTodo(values, {
+      onError: () => {
+        setSubmitting(false);
+      },
+      onSuccess: () => {
+        resetForm();
+        setEditable(false);
+      }
+    });
   };
 
-  const handleToggleTodoChange = () => toggleTodo(todo);
+  const handleToggleTodoChange = () => toggleTodo({ ...todo, checked: !todo.checked });
 
   return (
     <Formik
@@ -112,13 +117,9 @@ export const TodoItem = ({
                       <IconEdit />
                     </IconButton>
                   )}
-                  {loadingDeleteTodoId === todo.id ? (
-                    <LoadingButton />
-                  ) : (
-                    <IconButton onClick={() => handleDeleteTodoClick(todo)} aria-label="Delete todo">
-                      <IconDelete />
-                    </IconButton>
-                  )}
+                  <IconButton onClick={() => handleDeleteTodoClick(todo)} aria-label="Delete todo">
+                    <IconDelete />
+                  </IconButton>
                 </Grid>
               </Grid>
             </Box>

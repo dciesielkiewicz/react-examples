@@ -1,17 +1,21 @@
-import { act, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { addTodo as addTodoRequest } from '../../api';
 import { render } from '../../testUtils';
 import { AddTodo } from './AddTodo';
 
-const addTodo = jest.fn();
-const resetForm = expect.any(Function);
-const setSubmitting = expect.any(Function);
+const addTodo = addTodoRequest as jest.Mock;
+
+jest.mock('../../api/todos/requests', () => ({
+  addTodo: jest.fn(),
+}));
+
 const checked = false;
 const title = 'Todo title';
 
 describe('AddTodo', () => {
   test('Should properly focus on title input', () => {
     const { getByLabelText, getByPlaceholderText } = render(
-      <AddTodo addTodo={addTodo} />
+      <AddTodo />
     );
     const titleInput = getByPlaceholderText('Type your next todo');
     expect(titleInput).not.toHaveFocus();
@@ -22,14 +26,12 @@ describe('AddTodo', () => {
 
   test('Should display missing title validation', async () => {
     const { container, getByText, queryByText } = render(
-      <AddTodo addTodo={addTodo} />
+      <AddTodo />
     );
     expect(queryByText('Title is required')).toBeNull();
 
-    act(() => {
-      const submitButton = container.querySelector('button[type=submit]');
-      submitButton && fireEvent.click(submitButton);
-    });
+    const submitButton = container.querySelector('button[type=submit]');
+    submitButton && fireEvent.click(submitButton);
 
     await waitFor(() => {
       expect(getByText('Title is required')).toBeInTheDocument();
@@ -38,21 +40,17 @@ describe('AddTodo', () => {
 
   test('Should properly submit new todo', async () => {
     const { container, getByPlaceholderText } = render(
-      <AddTodo addTodo={addTodo} />
+      <AddTodo />
     );
     const titleInput = getByPlaceholderText('Type your next todo');
 
-    act(() => {
-      fireEvent.change(titleInput, { target: { value: title }});
-    });
+    fireEvent.change(titleInput, { target: { value: title }});
 
-    act(() => {
-      const submitButton = container.querySelector('button[type=submit]');
-      submitButton && fireEvent.click(submitButton);
-    });
+    const submitButton = container.querySelector('button[type=submit]');
+    submitButton && fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(addTodo).toHaveBeenCalledWith({ title, checked }, { resetForm, setSubmitting });
+      expect(addTodo).toHaveBeenCalledWith({ title, checked });
     });
   });
 });

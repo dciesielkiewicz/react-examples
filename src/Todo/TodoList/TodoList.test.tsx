@@ -1,7 +1,7 @@
 import moxios from 'moxios';
 import { waitFor } from '@testing-library/react';
+import { ITodo } from '../../api';
 import { render } from '../../testUtils';
-import { ITodo } from '../types';
 import { TodoList } from './TodoList';
 
 const todo1: ITodo = {

@@ -6,6 +6,8 @@ import {
   RenderOptions,
 } from '@testing-library/react';
 import { theme } from './theme';
+import { QueryClientProvider } from 'react-query';
+import { queryClient } from './api';
 
 interface IAllTheProvidersProps {
   children: ReactNode;
@@ -14,7 +16,9 @@ interface IAllTheProvidersProps {
 const AllTheProviders = ({ children }: IAllTheProvidersProps) => (
   <MemoryRouter>
     <ThemeProvider theme={theme}>
-      {children}
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
     </ThemeProvider>
   </MemoryRouter>
 );

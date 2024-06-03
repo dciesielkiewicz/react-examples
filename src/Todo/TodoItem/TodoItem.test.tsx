@@ -1,15 +1,16 @@
-import { act, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { ITodo, updateTodo as updateTodoRequest } from '../../api';
 import { render } from '../../testUtils';
 import { TodoItem } from './TodoItem';
-import { ITodo } from '../types';
+
+const updateTodo = updateTodoRequest as jest.Mock;
+
+jest.mock('../../api/todos/requests', () => ({
+  updateTodo: jest.fn(),
+}));
 
 const handleDeleteTodoClick = jest.fn();
-const updateTodo = jest.fn();
-const toggleTodo = jest.fn();
-const loadingDeleteTodoId = null;
 const newTitle = 'New todo title';
-const resetForm = expect.any(Function);
-const setSubmitting = expect.any(Function);
 const todo: ITodo = {
   id: 'todoId1',
   title: 'Todo title',
@@ -19,28 +20,37 @@ const newTodo: ITodo = {
   ...todo,
   title: newTitle,
 };
+const toggledTodo: ITodo = {
+  ...todo,
+  checked: !todo.checked,
+}
 
 const props = {
   handleDeleteTodoClick,
-  loadingDeleteTodoId,
-  toggleTodo,
   todo,
-  updateTodo,
 };
 
 describe('TodoItem', () => {
-  test('Should properly call toggle checked handler while clicking at checkbox', () => {
+  beforeEach(() => {
+    updateTodo.mockClear();
+  });
+
+  test('Should properly call toggle checked handler while clicking at checkbox', async () => {
     const { getByLabelText } = render(<TodoItem {...props} />);
     fireEvent.click(getByLabelText('Toggle todo'));
 
-    expect(toggleTodo).toHaveBeenCalledWith(todo);
+    await waitFor(() => {
+      expect(updateTodo).toHaveBeenCalledWith(toggledTodo);
+    })
   });
 
-  test('Should properly call toggle checked handler while clicking at title', () => {
+  test('Should properly call toggle checked handler while clicking at title', async () => {
     const { getByText } = render(<TodoItem {...props} />);
     fireEvent.click(getByText(todo.title));
 
-    expect(toggleTodo).toHaveBeenCalledWith(todo);
+    await waitFor(() => {
+      expect(updateTodo).toHaveBeenCalledWith(toggledTodo);
+    });
   });
 
   test('Should switch form to editable while clicking edit button', () => {
@@ -54,9 +64,7 @@ describe('TodoItem', () => {
   test('Should properly switch form to editable while clicking edit button and focus input', async () => {
     const { getByLabelText, getByPlaceholderText, queryByText } = render(<TodoItem {...props} />);
 
-    act(() => {
-      fireEvent.click(getByLabelText('Edit todo'));
-    });
+    fireEvent.click(getByLabelText('Edit todo'));
 
     expect(queryByText(todo.title)).toBeNull();
     const titleInput = getByPlaceholderText('Type your todo here');
@@ -77,20 +85,14 @@ describe('TodoItem', () => {
     } = render(<TodoItem {...props} />);
     expect(queryByText('Title is required')).toBeNull();
 
-    act(() => {
-      fireEvent.click(getByLabelText('Edit todo'));
-    });
+    fireEvent.click(getByLabelText('Edit todo'));
 
     const titleInput = getByPlaceholderText('Type your todo here');
 
-    act(() => {
-      fireEvent.change(titleInput, { target: { value: '' }});
-    });
+    fireEvent.change(titleInput, { target: { value: '' }});
 
-    act(() => {
-      const submitButton = container.querySelector('button[type=submit]');
-      submitButton && fireEvent.click(submitButton);
-    });
+    const submitButton = container.querySelector('button[type=submit]');
+    submitButton && fireEvent.click(submitButton);
 
     await waitFor(() => {
       expect(getByText('Title is required')).toBeInTheDocument();
@@ -106,23 +108,17 @@ describe('TodoItem', () => {
     } = render(<TodoItem {...props} />);
     expect(queryByText('Title is required')).toBeNull();
 
-    act(() => {
-      fireEvent.click(getByLabelText('Edit todo'));
-    });
+    fireEvent.click(getByLabelText('Edit todo'));
 
     const titleInput = getByPlaceholderText('Type your todo here');
 
-    act(() => {
-      fireEvent.change(titleInput, { target: { value: newTitle }});
-    });
+    fireEvent.change(titleInput, { target: { value: newTitle }});
 
-    act(() => {
-      const submitButton = container.querySelector('button[type=submit]');
-      submitButton && fireEvent.click(submitButton);
-    });
+    const submitButton = container.querySelector('button[type=submit]');
+    submitButton && fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(updateTodo).toHaveBeenCalledWith(newTodo, { resetForm, setSubmitting });
+      expect(updateTodo).toHaveBeenCalledWith(newTodo);
     });
   });
 

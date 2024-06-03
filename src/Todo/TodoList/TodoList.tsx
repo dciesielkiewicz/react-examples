@@ -3,22 +3,17 @@ import { useState } from 'react';
 import { Loader } from '../../components';
 import { useModal } from '../../hooks';
 
+import { ITodo } from '../../api';
 import { AddTodo } from '../AddTodo';
 import { DeleteTodoModal } from '../DeleteTodoModal';
 import { TodoItem } from '../TodoItem';
-import { ITodo } from '../types';
 
 import { useTodos } from './useTodos';
 
 export const TodoList = () => {
   const [deleteTodoItem, setDeleteTodoItem] = useState<ITodo | undefined>();
   const {
-    addTodo,
-    deleteTodo,
-    updateTodo,
-    loadingDeleteTodoId,
-    loading,
-    toggleTodo,
+    isLoading,
     todos,
   } = useTodos();
   const { closeModal, isOpened, openModal } = useModal();
@@ -28,25 +23,21 @@ export const TodoList = () => {
     openModal();
   }
 
-  if (loading) return <Loader />;
+  if (isLoading) return <Loader />;
 
   return (
     <>
       {todos.map((todo) => (
         <TodoItem
           key={todo.id}
-          loadingDeleteTodoId={loadingDeleteTodoId}
           handleDeleteTodoClick={handleDeleteTodoClick}
-          toggleTodo={toggleTodo}
           todo={todo}
-          updateTodo={updateTodo}
         />
       ))}
-      <AddTodo addTodo={addTodo} />
+      <AddTodo />
       {deleteTodoItem && (
         <DeleteTodoModal
           closeModal={closeModal}
-          deleteTodo={deleteTodo}
           isOpened={isOpened}
           todo={deleteTodoItem}
         />

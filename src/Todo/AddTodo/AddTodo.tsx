@@ -6,21 +6,26 @@ import IconAdd from '@mui/icons-material/Add';
 
 import { Input, LoadingButton } from '../../components';
 
+import { IFormTodo } from '../../api';
 import { emptyTodo, FORM_FIELD_TITLE } from '../constants';
-import { IFormTodo, IFormTodoFormikHelpers } from '../types';
 import { validationSchema } from '../validationSchema';
+import { useAddTodo } from './useAddTodo';
 
-interface IAddTodoProps {
-  addTodo: (todo: IFormTodo, formikHelpers: IFormTodoFormikHelpers) => void;
-}
-
-export const AddTodo = ({ addTodo }: IAddTodoProps) => {
+export const AddTodo = () => {
   const inputRef = useRef<HTMLInputElement>();
+  const { addTodo } = useAddTodo();
 
   const focusInput = () => inputRef.current?.focus();
 
-  const submitHandler = (values: IFormTodo, { resetForm, setSubmitting }: FormikHelpers<IFormTodo>) => {
-    addTodo(values, { resetForm, setSubmitting });
+  const submitHandler = (values: IFormTodo, { resetForm, setSubmitting}: FormikHelpers<IFormTodo>) => {
+    addTodo(values, {
+      onError: () => {
+        setSubmitting(false);
+      },
+      onSuccess: () => {
+        resetForm();
+      }
+    });
   };
 
   return (

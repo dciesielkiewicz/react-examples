@@ -1,22 +1,17 @@
-import moxios from 'moxios';
 import { waitFor } from '@testing-library/react';
+import { ITodo, fetchTodos as fetchTodosRequest } from '../api';
 import { render } from '../testUtils';
 import { Todo } from './Todo';
 
+const fetchTodos = fetchTodosRequest as jest.Mock;
+
+jest.mock('../api/todos/requests', () => ({
+  fetchTodos: jest.fn(),
+}));
+
 describe('Todo', () => {
-  beforeEach(() => {
-    moxios.install()
-  })
-
-  afterEach(() => {
-    moxios.uninstall()
-  })
-
   test('Should render Todo heading', async () => {
-    moxios.stubRequest('/todos', {
-      status: 200,
-      response: [],
-    })
+    fetchTodos.mockImplementation(() => new Promise<ITodo[]>((resolve) => resolve([])));
 
     const { getByText } = render(<Todo />);
     await waitFor(() => {

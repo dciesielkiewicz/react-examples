@@ -6,25 +6,26 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import { ITodo } from '../types';
+import{ LoadingButton } from '@mui/lab';
+
+import { ITodo } from '../../api';
+import { useDeleteTodo } from './useDeleteTodo';
 
 interface IDeleteTodoModalProps {
   closeModal: () => void;
-  deleteTodo: (todoId: ITodo['id']) => void;
   isOpened: boolean;
   todo: ITodo;
 }
 
 export const DeleteTodoModal = ({
   closeModal,
-  deleteTodo,
   isOpened,
   todo,
 }: IDeleteTodoModalProps) => {
+  const { deleteTodo, isLoading } = useDeleteTodo();
 
   const confirmDeleteTodo = () => {
-    deleteTodo(todo.id);
-    closeModal();
+    deleteTodo({ id: todo.id }, { onSuccess: closeModal });
   };
 
   return (
@@ -41,9 +42,10 @@ export const DeleteTodoModal = ({
         <Button onClick={closeModal} color="primary">
           Cancel
         </Button>
-        <Button onClick={confirmDeleteTodo} variant="contained" color="primary">
+        <LoadingButton loading={isLoading} onClick={confirmDeleteTodo} variant="contained" color="primary">
           Delete
-        </Button>
+        </LoadingButton>
+        
       </DialogActions>
     </Dialog>
   )
